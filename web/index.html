@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EditMatch AI</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <strong>EditMatch AI</strong>
+        </div>
+
+        <nav class="nav-list" aria-label="Primary">
+          <button class="nav-item active" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z"/><path d="M9 5v14M4 10h16"/></svg>
+            Dashboard
+          </button>
+          <button class="nav-item" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3z"/><path d="m3 7 4-4h10l4 4"/></svg>
+            Projects
+          </button>
+          <button class="nav-item" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>
+            Templates
+          </button>
+          <button class="nav-item" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="7"/></svg>
+            Presets
+          </button>
+          <button class="nav-item" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m9 10 3 3 4-5"/></svg>
+            Media Library
+          </button>
+        </nav>
+
+        <div class="plan-card">
+          <div class="plan-title">Local Render</div>
+          <div class="plan-copy">Private workspace processing</div>
+          <div class="meter"><span></span></div>
+          <small>Uploads stay inside this project folder.</small>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h1>Reference Match Project</h1>
+            <p id="saveState">Ready to upload clips</p>
+          </div>
+          <div class="top-actions">
+            <button class="ghost-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8l6 4-6 4z"/></svg>
+              Tutorials
+            </button>
+            <button class="icon-button" type="button" aria-label="Help">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5 1.4c0 2-2.5 2.1-2.5 4.1"/><path d="M12 18h.01"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <section class="workspace-grid">
+          <div class="left-stack">
+            <section class="upload-row">
+              <article class="panel upload-panel">
+                <div class="step-title">
+                  <span>1</span>
+                  <div>
+                    <h2>Reference Video</h2>
+                    <p>Upload the edited video style you want to copy.</p>
+                  </div>
+                </div>
+                <div class="video-card" id="referencePreviewCard">
+                  <video id="referencePreview" muted playsinline></video>
+                  <div class="video-placeholder">Reference preview</div>
+                  <button class="remove-button" type="button" data-clear="reference" aria-label="Clear reference">x</button>
+                  <div class="video-meta">
+                    <strong id="referenceName">No reference selected</strong>
+                    <span id="referenceMeta">MP4, MOV, AVI</span>
+                  </div>
+                </div>
+                <label class="drop-zone" id="referenceDrop">
+                  <input id="referenceInput" type="file" accept="video/*" />
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 19h14"/></svg>
+                  <span>Click to upload or drag and drop</span>
+                  <small>Reference clip with edits, music, effects, pacing</small>
+                </label>
+              </article>
+
+              <article class="panel upload-panel">
+                <div class="step-title">
+                  <span>2</span>
+                  <div>
+                    <h2>New Clip to Edit</h2>
+                    <p>Upload the raw clip you want matched to the reference.</p>
+                  </div>
+                </div>
+                <div class="video-card" id="sourcePreviewCard">
+                  <video id="sourcePreview" muted playsinline></video>
+                  <div class="video-placeholder">New clip preview</div>
+                  <button class="remove-button" type="button" data-clear="source" aria-label="Clear source">x</button>
+                  <div class="video-meta">
+                    <strong id="sourceName">No source selected</strong>
+                    <span id="sourceMeta">MP4, MOV, AVI</span>
+                  </div>
+                </div>
+                <label class="drop-zone" id="sourceDrop">
+                  <input id="sourceInput" type="file" accept="video/*" />
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 19h14"/></svg>
+                  <span>Click to upload or drag and drop</span>
+                  <small>Raw or Unedited video to reorder and style-match</small>
+                </label>
+              </article>
+            </section>
+
+            <section class="panel analysis-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Style Analysis Summary</h2>
+                  <p id="analysisStatus">Waiting for reference and source clips</p>
+                </div>
+                <button class="link-button" type="button" id="profileLink" disabled>View profile</button>
+              </div>
+              <div class="analysis-cards">
+                <div class="metric-card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+                  <span>Transitions</span>
+                  <strong id="cutsMetric">--</strong>
+                  <small>reference cuts</small>
+                </div>
+                <div class="metric-card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 15s3-5 6 0 5 0 6-2 4 2 4 2"/></svg>
+                  <span>Pacing</span>
+                  <strong id="pacingMetric">--</strong>
+                  <small>average shot length</small>
+                </div>
+                <div class="metric-card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="3"/><circle cx="15" cy="8" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+                  <span>Color Match</span>
+                  <strong id="presetMetric">Auto</strong>
+                  <small>reference-aware look</small>
+                </div>
+                <div class="metric-card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V9M10 20V4M15 20v-7M20 20V6"/></svg>
+                  <span>Beat Sync</span>
+                  <strong id="audioMetric">Ref audio</strong>
+                  <small>music copied by default</small>
+                </div>
+                <div class="metric-card">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-2 8h7l-9 12 2-9H4z"/></svg>
+                  <span>Motion & Energy</span>
+                  <strong id="matchMetric">Match</strong>
+                  <small>search + reorder source scenes</small>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel timeline-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Timeline</h2>
+                  <p>Reference structure and generated source match points</p>
+                </div>
+                <select id="timelineScale" aria-label="Timeline scale">
+                  <option>Fit</option>
+                  <option>Compact</option>
+                </select>
+              </div>
+              <div class="timeline" id="timeline">
+                <div class="timeline-empty">Generate a match to see cuts, source picks, and flash moments.</div>
+              </div>
+              <div class="timeline-legend">
+                <span><i class="cut"></i>Cuts / transitions</span>
+                <span><i class="source"></i>Matched source scenes</span>
+                <span><i class="flash"></i>Flash effects</span>
+              </div>
+            </section>
+          </div>
+
+          <aside class="right-stack">
+            <section class="panel preview-panel">
+              <div class="panel-heading compact">
+                <div>
+                  <h2>AI Preview</h2>
+                  <p id="previewState">Matched output appears here</p>
+                </div>
+                <select id="qualitySelect" aria-label="Preview quality">
+                  <option>1080p</option>
+                  <option>720p</option>
+                </select>
+              </div>
+              <div class="output-player">
+                <video id="outputPreview" controls playsinline></video>
+                <div id="outputPlaceholder">Upload both videos, then generate.</div>
+              </div>
+            </section>
+
+            <section class="panel settings-panel">
+              <h2>Output Settings</h2>
+              <div class="settings-grid">
+                <label>
+                  Aspect Ratio
+                  <select id="aspectSelect">
+                    <option value="reference">Match reference</option>
+                    <option value="square">1:1 Square</option>
+                  </select>
+                </label>
+                <label>
+                  Resolution
+                  <select id="resolutionSelect">
+                    <option value="reference">Match reference</option>
+                    <option value="preview">Preview render</option>
+                  </select>
+                </label>
+                <label>
+                  Source Selection
+                  <select id="sourceMode">
+                    <option value="match">AI match + reorder</option>
+                    <option value="spread">Sequential spread</option>
+                    <option value="first">From beginning</option>
+                  </select>
+                </label>
+                <label>
+                  Audio
+                  <select id="audioSelect">
+                    <option value="reference">Use reference music</option>
+                    <option value="source">Use source audio</option>
+                    <option value="none">No audio</option>
+                  </select>
+                </label>
+                <label>
+                  Style Preset
+                  <select id="effectPreset">
+                    <option value="auto">Auto detect</option>
+                    <option value="reference">Reference look</option>
+                    <option value="kingbaldwin">KingBaldwin gritty</option>
+                    <option value="clean">Clean</option>
+                  </select>
+                </label>
+                <label>
+                  Transition
+                  <select id="transitionSelect">
+                    <option value="">Auto</option>
+                    <option value="0">Hard cuts</option>
+                    <option value="0.12">Short fades</option>
+                  </select>
+                </label>
+              </div>
+              <label class="toggle-row">
+                <span>Copy reference outro/effects</span>
+                <input id="copyOutro" type="checkbox" />
+              </label>
+              <label class="toggle-row">
+                <span>Disable detected flash overlays</span>
+                <input id="noFlashes" type="checkbox" />
+              </label>
+            </section>
+
+            <button class="generate-button" id="generateButton" type="button">
+              <span class="sparkle" aria-hidden="true"></span>
+              Generate Matched Edit
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+            <p class="render-note" id="renderNote">Estimated time depends on clip length and cut density.</p>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
